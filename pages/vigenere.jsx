@@ -1,8 +1,10 @@
 const Vigenere = () => {
     return (
-        <section>
-            
-        </section>
+        <>
+            <section>
+                
+            </section>
+        </>
     );
 }
  
