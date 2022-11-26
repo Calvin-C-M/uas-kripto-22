@@ -4,9 +4,6 @@ import { AiOutlineArrowRight } from "react-icons/ai"
 const MenuCard = ({ title, icon, desc, link }) => {
     return (
         <div className="card lg:w-80 md:w-72 bg-base-100 shadow-xl">
-            {/* <figure>
-                
-            </figure> */}
             <div className="card-body">
                 <h2 className="card-title">{title}</h2>
                 <p>{desc}</p>
