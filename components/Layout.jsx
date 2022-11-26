@@ -1,5 +1,6 @@
-import Sidebar from "./Sidebar";
+import MENULIST from "../constants/MenuList";
 import { AiOutlineMenu } from "react-icons/ai";
+import Link from "next/link";
 
 const Layout = ({ children }) => {
     return (
@@ -12,7 +13,20 @@ const Layout = ({ children }) => {
                     <AiOutlineMenu />
                 </label>
             </main>
-            <Sidebar />
+            <div className="drawer-side">
+                <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
+                <ul className="menu p-4 w-60 bg-base-100 text-base-content">
+                    <header className="mb-5">
+                        <h1 className="text-2xl font-bold">Cryptography App</h1> 
+                    </header>
+                {/* <!-- Sidebar content here --> */}
+                    { MENULIST.map(list => <li key={list.id}>
+                        <Link href={list.link}>
+                            { list.title }
+                        </Link>
+                    </li>) }
+                </ul>
+            </div>
         </div>
     );
 }
