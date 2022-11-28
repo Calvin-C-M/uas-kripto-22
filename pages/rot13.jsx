@@ -5,7 +5,7 @@ const Rot13 = () => {
     const [resultText, setResultText] = useState("")
 
     const encrypt = () => {
-
+        
     }
 
     const decrypt = () => {
@@ -28,6 +28,7 @@ const Rot13 = () => {
                                 name="text"
                                 id="text"
                                 className="textarea textarea-primary w-80 resize-none"
+                                onChange={e => setText(e.target.value)}
                             />
                         </div>                     
                         <div className="flex gap-3">

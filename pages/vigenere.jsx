@@ -29,6 +29,7 @@ const Vigenere = () => {
                                 name="text"
                                 id="text"
                                 className="textarea textarea-primary w-80 resize-none"
+                                onChange={e => setText(e.target.value)}
                             />
                         </div>
                         <div className="mb-3">
