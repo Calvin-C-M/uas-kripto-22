@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import VigenereEncrypt from "../functions/VigenereEncrypt";
+import VigenereDecrypt from "../functions/VigenereDecrypt";
 
 const Vigenere = () => {
     const textInput = useRef(null)
@@ -12,80 +14,80 @@ const Vigenere = () => {
     const isLowerCase = (char) => char >= 97 && char <= 122
     const isLetter = (char) => isUpperCase(char) || isLowerCase(char)
 
-    const generateKey = (oldKey="", plainText="") => {
-        let newKey = ""
-        let remainder=0
+    // const generateKey = (oldKey="", plainText="") => {
+    //     let newKey = ""
+    //     let remainder=0
 
-        for(let i=0; i<plainText.length; i++) {
-            let index = i-remainder
+    //     for(let i=0; i<plainText.length; i++) {
+    //         let index = i-remainder
 
-            // If encounter non letter char
-            if(!isLetter(plainText.charCodeAt(i))) {
-                remainder++
-                newKey += " "
-                continue
-            }
+    //         // If encounter non letter char
+    //         if(!isLetter(plainText.charCodeAt(i))) {
+    //             remainder++
+    //             newKey += " "
+    //             continue
+    //         }
             
-            // If key has reached its string length
-            if(index > oldKey.length-1) {
-                newKey += oldKey.at(index-(Math.floor(index/oldKey.length)*oldKey.length))
-            } else {
-                newKey += oldKey.at(index)
-            }
-        }
+    //         // If key has reached its string length
+    //         if(index > oldKey.length-1) {
+    //             newKey += oldKey.at(index-(Math.floor(index/oldKey.length)*oldKey.length))
+    //         } else {
+    //             newKey += oldKey.at(index)
+    //         }
+    //     }
         
-        return newKey
-    }
+    //     return newKey
+    // }
 
-    const encrypt = () => {
-        let result = ""
+    // const encrypt = () => {
+    //     let result = ""
 
-        const newKey = generateKey(key.toUpperCase(), text)
+    //     const newKey = generateKey(key.toUpperCase(), text)
 
-        for(let i=0; i<text.length; i++) {
-            let currChar = text.charCodeAt(i)
-            let currKey = newKey.charCodeAt(i) - 65
+    //     for(let i=0; i<text.length; i++) {
+    //         let currChar = text.charCodeAt(i)
+    //         let currKey = newKey.charCodeAt(i) - 65
 
-            if(isUpperCase(currChar)) {
-                currChar += currKey
-                if(currChar < 65) currChar += 26
-                if(currChar > 90) currChar -= 26
-            } else if(isLowerCase(currChar)) {
-                currChar += currKey
-                if(currChar < 97) currChar += 26
-                if(currChar > 122) currChar -= 26
-            }
+    //         if(isUpperCase(currChar)) {
+    //             currChar += currKey
+    //             if(currChar < 65) currChar += 26
+    //             if(currChar > 90) currChar -= 26
+    //         } else if(isLowerCase(currChar)) {
+    //             currChar += currKey
+    //             if(currChar < 97) currChar += 26
+    //             if(currChar > 122) currChar -= 26
+    //         }
 
-            result += String.fromCharCode(currChar)
-        }
+    //         result += String.fromCharCode(currChar)
+    //     }
 
-        setResultText(result)        
-    }
+    //     setResultText(result)        
+    // }
 
-    const decrypt = () => {
-        let result = ""
+    // const decrypt = () => {
+    //     let result = ""
 
-        const newKey = generateKey(key.toUpperCase(), text)
+    //     const newKey = generateKey(key.toUpperCase(), text)
 
-        for(let i=0; i<text.length; i++) {
-            let currChar = text.charCodeAt(i)
-            let currKey = newKey.charCodeAt(i) - 65
+    //     for(let i=0; i<text.length; i++) {
+    //         let currChar = text.charCodeAt(i)
+    //         let currKey = newKey.charCodeAt(i) - 65
 
-            if(isUpperCase(currChar)) {
-                currChar -= currKey
-                if(currChar < 65) currChar += 26
-                if(currChar > 90) currChar -= 26
-            } else if(isLowerCase(currChar)) {
-                currChar -= currKey
-                if(currChar < 97) currChar += 26
-                if(currChar > 122) currChar -= 26
-            }
+    //         if(isUpperCase(currChar)) {
+    //             currChar -= currKey
+    //             if(currChar < 65) currChar += 26
+    //             if(currChar > 90) currChar -= 26
+    //         } else if(isLowerCase(currChar)) {
+    //             currChar -= currKey
+    //             if(currChar < 97) currChar += 26
+    //             if(currChar > 122) currChar -= 26
+    //         }
 
-            result += String.fromCharCode(currChar)
-        }
+    //         result += String.fromCharCode(currChar)
+    //     }
 
-        setResultText(result)
-    }
+    //     setResultText(result)
+    // }
 
     const clearCalc = () => {
         textInput.current.value = ""
@@ -127,10 +129,10 @@ const Vigenere = () => {
                             />
                         </div>                        
                         <div className="flex gap-3">
-                            <button className="btn btn-primary" onClick={() => encrypt()}>
+                            <button className="btn btn-primary" onClick={() => setResultText(VigenereEncrypt(text,key))}>
                                 Encrypt
                             </button>
-                            <button className="btn btn-primary" onClick={() => decrypt()}>
+                            <button className="btn btn-primary" onClick={() => setResultText(VigenereDecrypt(text,key))}>
                                 Decrypt
                             </button>
                             <button className="btn btn-error" onClick={() => clearCalc()}>

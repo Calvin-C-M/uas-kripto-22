@@ -1,34 +1,11 @@
 import { useRef, useState } from "react";
+import Rot13Shift from "../functions/Rot13Shift";
 
 const Rot13 = () => {
     const inputText = useRef(null)
 
     const [text,setText] = useState("")
     const [resultText, setResultText] = useState("")
-
-    const isUpperCase = (char) => char >= 65 && char <= 90
-    const isLowerCase = (char) => char >= 97 && char <= 122
-
-    const shift = () => {
-        let result = ""
-        for(let i=0; i<text.length; i++) {
-            let charAscii = text.charCodeAt(i)
-
-            if(isUpperCase(charAscii)) {
-                charAscii += 13
-                if(charAscii < 65) charAscii += 26
-                if(charAscii > 90) charAscii -= 26
-            } else if(isLowerCase(charAscii)) {
-                charAscii += 13
-                if(charAscii < 97) charAscii += 26
-                if(charAscii > 122) charAscii -= 26
-            }
-
-            result += String.fromCodePoint(charAscii)
-        }
-
-        setResultText(result)
-    }
 
     const clearCalc = () => {
         inputText.current.value = ""
@@ -56,7 +33,7 @@ const Rot13 = () => {
                             />
                         </div>                     
                         <div className="flex gap-3">
-                            <button className="btn btn-primary" onClick={() => shift()}>
+                            <button className="btn btn-primary" onClick={() => setResultText(Rot13Shift(text))}>
                                 Shift
                             </button>
                             <button className="btn btn-error" onClick={() => clearCalc()}>
