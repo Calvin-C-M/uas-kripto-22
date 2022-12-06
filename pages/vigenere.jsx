@@ -1,16 +1,96 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Vigenere = () => {
+    const textInput = useRef(null)
+    const keyInput = useRef(null)
+
     const [text, setText] = useState("")
     const [key, setKey] = useState("")
     const [resultText, setResultText] = useState("")
 
-    const encrypt = () => {
+    const isUpperCase = (char) => char >= 65 && char <= 90
+    const isLowerCase = (char) => char >= 97 && char <= 122
+    const isLetter = (char) => isUpperCase(char) || isLowerCase(char)
+
+    const generateKey = (oldKey="", plainText="") => {
+        let newKey = ""
+        let remainder=0
+
+        for(let i=0; i<plainText.length; i++) {
+            let index = i-remainder
+
+            // If encounter non letter char
+            if(!isLetter(plainText.charCodeAt(i))) {
+                remainder++
+                newKey += " "
+                continue
+            }
+            
+            // If key has reached its string length
+            if(index > oldKey.length-1) {
+                newKey += oldKey.at(index-(Math.floor(index/oldKey.length)*oldKey.length))
+            } else {
+                newKey += oldKey.at(index)
+            }
+        }
         
+        return newKey
+    }
+
+    const encrypt = () => {
+        let result = ""
+
+        const newKey = generateKey(key.toUpperCase(), text)
+
+        for(let i=0; i<text.length; i++) {
+            let currChar = text.charCodeAt(i)
+            let currKey = newKey.charCodeAt(i) - 65
+
+            if(isUpperCase(currChar)) {
+                currChar += currKey
+                if(currChar < 65) currChar += 26
+                if(currChar > 90) currChar -= 26
+            } else if(isLowerCase(currChar)) {
+                currChar += currKey
+                if(currChar < 97) currChar += 26
+                if(currChar > 122) currChar -= 26
+            }
+
+            result += String.fromCharCode(currChar)
+        }
+
+        setResultText(result)        
     }
 
     const decrypt = () => {
+        let result = ""
 
+        const newKey = generateKey(key.toUpperCase(), text)
+
+        for(let i=0; i<text.length; i++) {
+            let currChar = text.charCodeAt(i)
+            let currKey = newKey.charCodeAt(i) - 65
+
+            if(isUpperCase(currChar)) {
+                currChar -= currKey
+                if(currChar < 65) currChar += 26
+                if(currChar > 90) currChar -= 26
+            } else if(isLowerCase(currChar)) {
+                currChar -= currKey
+                if(currChar < 97) currChar += 26
+                if(currChar > 122) currChar -= 26
+            }
+
+            result += String.fromCharCode(currChar)
+        }
+
+        setResultText(result)
+    }
+
+    const clearCalc = () => {
+        textInput.current.value = ""
+        keyInput.current.value = ""
+        setResultText("")
     }
 
     return (
@@ -26,6 +106,7 @@ const Vigenere = () => {
                                 Enter Text
                             </label>
                             <textarea 
+                                ref={textInput}
                                 name="text"
                                 id="text"
                                 className="textarea textarea-primary w-80 resize-none"
@@ -37,6 +118,7 @@ const Vigenere = () => {
                                 Enter Key
                             </label>
                             <input 
+                                ref={keyInput}
                                 type="text" 
                                 name="key" 
                                 id="key" 
@@ -50,6 +132,9 @@ const Vigenere = () => {
                             </button>
                             <button className="btn btn-primary" onClick={() => decrypt()}>
                                 Decrypt
+                            </button>
+                            <button className="btn btn-error" onClick={() => clearCalc()}>
+                                Clear
                             </button>
                         </div>
                     </section>
