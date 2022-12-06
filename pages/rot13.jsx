@@ -1,15 +1,38 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Rot13 = () => {
+    const inputText = useRef(null)
+
     const [text,setText] = useState("")
     const [resultText, setResultText] = useState("")
 
-    const encrypt = () => {
-        
+    const isUpperCase = (char) => char >= 65 && char <= 90
+    const isLowerCase = (char) => char >= 97 && char <= 122
+
+    const shift = () => {
+        let result = ""
+        for(let i=0; i<text.length; i++) {
+            let charAscii = text.charCodeAt(i)
+
+            if(isUpperCase(charAscii)) {
+                charAscii += 13
+                if(charAscii < 65) charAscii += 26
+                if(charAscii > 90) charAscii -= 26
+            } else if(isLowerCase(charAscii)) {
+                charAscii += 13
+                if(charAscii < 97) charAscii += 26
+                if(charAscii > 122) charAscii -= 26
+            }
+
+            result += String.fromCodePoint(charAscii)
+        }
+
+        setResultText(result)
     }
 
-    const decrypt = () => {
-
+    const clearCalc = () => {
+        inputText.current.value = ""
+        setResultText("")
     }
 
     return (
@@ -25,6 +48,7 @@ const Rot13 = () => {
                                 Enter Text
                             </label>
                             <textarea 
+                                ref={inputText}
                                 name="text"
                                 id="text"
                                 className="textarea textarea-primary w-80 resize-none"
@@ -32,11 +56,11 @@ const Rot13 = () => {
                             />
                         </div>                     
                         <div className="flex gap-3">
-                            <button className="btn btn-primary" onClick={() => encrypt()}>
-                                Encrypt
+                            <button className="btn btn-primary" onClick={() => shift()}>
+                                Shift
                             </button>
-                            <button className="btn btn-primary" onClick={() => decrypt()}>
-                                Decrypt
+                            <button className="btn btn-error" onClick={() => clearCalc()}>
+                                Clear
                             </button>
                         </div>
                     </section>
