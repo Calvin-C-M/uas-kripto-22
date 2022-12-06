@@ -17,7 +17,9 @@ const Layout = ({ children }) => {
                 <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
                 <ul className="menu p-4 w-60 bg-base-100 text-base-content">
                     <header className="mb-5">
-                        <h1 className="text-2xl font-bold">Cryptography App</h1> 
+                        <Link href="/">
+                            <h1 className="text-2xl font-bold">Cryptography App</h1> 
+                        </Link>
                     </header>
                 {/* <!-- Sidebar content here --> */}
                     { MENULIST.map(list => <li key={list.id}>
